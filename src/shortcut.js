@@ -1,0 +1,160 @@
+(function( factory ){
+    var root = window;
+    root.KeyShortcut = factory( root, {} );
+})(function( root, KeyShortcut ){
+
+    var tmpKey,tmpValue;
+    var hasOwn = function( obj, key ){
+        return obj.hasOwnProperty( key );
+    }
+    var isObj = function( obj ){
+        return obj && obj.toString() === '[object Object]';
+    }
+    var log = function( msg, type ){
+        if( !KeyShortcut.DEBUG ){
+            return false;
+        }
+        var colorMap = {
+            w:'yellow',
+            e:'red',
+            i:'blue',
+            o:'green'
+        }
+        var tipMap = {
+            w:'WARN',
+            e:'ERRO',
+            i:'INFO',
+            o:'IMPO'
+        }
+        if( type && type in colorMap ){
+
+        }else{
+            type = 'i'
+        }
+        var ts = new Date().getTime();
+        console.log('%c' + '[ ' + ts + ' ] ' + tipMap[ type ] + ": " + msg, 'color:' + colorMap[type] + ';background:#eee;padding:4px;margin:4px;');
+    }
+    var INTERNAL_STR = '__internal__';
+    var addEvent = function( ele, ev, fn ){
+        if( 'addEventListener' in ele ){
+            ele.addEventListener( ev, fn, false );
+        }
+    }
+    var PRESSED_KEYS = [];
+    KeyShortcut.prop_prefix = '__ks';
+    KeyShortcut.DEBUG = false;
+    KeyShortcut.VERSION = '0.0.1';
+    KeyShortcut.TIMEOUT = 0;
+    KeyShortcut.register = function( key, callback, context ){
+        if( typeof key === 'string' ){
+            context = context || document;
+            this.registerOne( key, callback, context );
+        }else{
+            context = callback || document;
+            if( isObj( key ) ){
+                for( tmpKey in key ){
+                    if( hasOwn( key, tmpKey ) ){
+                        tmpValue = key[ tmpKey ];
+                        this.registerOne( tmpKey, tmpValue, context );
+                    }
+                }
+            }
+        }
+    }
+
+    KeyShortcut.config = function( options ){
+        var configurable = [ 'prop_prefix', 'DEBUG' ], k;
+        for( k in options ){
+            if( hasOwn( options, k ) && configurable.indexOf( k ) !== -1 ){
+                KeyShortcut[ k ] = options[ k ];
+            }
+        }
+    }
+
+
+    KeyShortcut.registerOne = function( key, callback, context ){
+        key = key.toLowerCase();
+        this.bindKbdAction( context );
+        this.setKeyMap( key, callback, context );
+    }
+
+    KeyShortcut.bindKbdAction = function( element ){
+        if( this.prop_prefix + INTERNAL_STR in element ){
+            return true;
+        }
+        element[ this.prop_prefix + INTERNAL_STR ] = {};
+
+        addEvent( element, 'keydown', function( e ){
+            KeyShortcut.listenKeyDown( e, element );
+        } )
+        addEvent( element, 'keyup', function( e ){
+            KeyShortcut.listenKeyUp( e );
+        } )
+    }
+
+    KeyShortcut.listenKeyDown = function( e, element ){
+        /*
+         * TODO
+         * 1. 连击如何处理
+         */
+        var cur_key = e.key.toLowerCase();
+        var internal = element[ this.prop_prefix + INTERNAL_STR ];
+        // log( e, 'o' );
+        if( PRESSED_KEYS.indexOf( cur_key ) === -1 ){
+            PRESSED_KEYS.push( cur_key );
+        }else{
+
+        }
+        log( 'Current Pressed -> ' + cur_key );
+        log( 'Combine Pressed -> ' + PRESSED_KEYS.join( ', ' ) );
+
+        var pressed_len = PRESSED_KEYS.length;
+        var trigger_key,combined_key;
+        for( ; pressed_len; pressed_len-- ){
+            combined_key = PRESSED_KEYS.slice( -pressed_len ).join( '+' );
+            if( combined_key in internal.ev_map ){
+                trigger_key = combined_key;
+                break;
+            }
+        }
+        if( typeof trigger_key !== 'undefined' ){
+            log( 'Shortcut Triggered -> ' + trigger_key, 'o' );
+            internal.ev_map[ trigger_key ].call( null, trigger_key );
+        }
+    }
+
+    KeyShortcut.listenKeyUp = function( e ){
+        var cur_key = e.key.toLowerCase();
+        var idx = PRESSED_KEYS.indexOf( cur_key );
+        if( idx !== -1 ){
+            if( this.TIMEOUT <= 0 ){
+                PRESSED_KEYS.splice( idx, 1 );
+            }else{
+                setTimeout( function(){
+                    PRESSED_KEYS.splice( idx, 1 );
+                }, this.TIMEOUT );
+            }
+        }
+    }
+
+
+
+    KeyShortcut.setKeyMap = function( key, callback, context ){
+        var internal = context[ this.prop_prefix + INTERNAL_STR ];
+        internal.ev_map = internal.ev_map || {};
+        internal.ev_map[ key ] = callback;
+
+        internal.key_list = internal.key_list || [];
+        internal.key_list.push( key );
+    }
+
+    return {
+        register:function(){
+            KeyShortcut.register.apply( KeyShortcut, arguments );
+        },
+        config:function(){
+            KeyShortcut.config.apply( KeyShortcut, arguments );
+        },
+        VERSION:KeyShortcut.VERSION
+    }
+});

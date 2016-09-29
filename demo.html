@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Shortcut</title>
+    <style>
+    #show{
+
+    }
+    </style>
+</head>
+<body>
+    <div tabindex=1>Content</div>
+    <input type="text">
+    <button>A Button</button>
+    <a href="#">A Link</a>
+    <input type="submit" value="A Submit Input">
+    <ul id="show"></ul>
+    <script src="src/shortcut.js"></script>
+    <script>
+    var ul = document.querySelector('#show');
+    var showKey = function( msg ){
+        var li = document.createElement('li');
+        li.innerText = msg;
+        ul.appendChild( li );
+    }
+
+    KeyShortcut.config({
+        DEBUG:true
+    })
+
+    KeyShortcut.register('g',function( key ){
+        showKey( key );
+    });
+
+    KeyShortcut.register({
+        'g+k':function( msg ){
+            showKey( msg );
+        },
+        'g+a':function( msg ){
+            showKey( msg );
+        },
+        'meta+c':function( msg ){
+            showKey( msg )
+        },
+        'a+b+c':function( msg ){
+            showKey( msg );
+        },
+        c:function( msg ){
+            showKey( msg );
+        }
+    });
+
+    </script>
+</body>
+</html>
