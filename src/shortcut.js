@@ -93,6 +93,9 @@
     }
 
     KeyShortcut.listenKeyDown = function( e, element ){
+        if( this.isFormInteractive( e ) ){
+            return false;
+        }
         /*
          * TODO
          * 1. 连击如何处理
@@ -127,6 +130,9 @@
     }
 
     KeyShortcut.listenKeyUp = function( e ){
+        if( this.isFormInteractive( e ) ){
+            return false;
+        }
         var cur_key = e.key.toLowerCase();
         var idx = PRESSED_KEYS.indexOf( cur_key );
         if( idx !== -1 ){
@@ -140,6 +146,18 @@
         }
     }
 
+    KeyShortcut.isFormInteractive = function( e ){
+        var target = e.target || e.srcElement;
+        var tagName = target.tagName.toLowerCase();
+        if( ['textarea','input'].indexOf( tagName ) > -1 ){
+            return true;
+        }
+        // 这个属性值居然是 string 类型
+        if( tagName.contentEditable === 'true' ){
+            return true;
+        }
+        return false;
+    }
 
 
     KeyShortcut.setKeyMap = function( key, callback, context ){

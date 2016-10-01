@@ -13,12 +13,13 @@
     <div tabindex=1>Content</div>
     <input type="text">
     <button>A Button</button>
-    <a href="#">A Link</a>
+    <a id="text" href="#">A Link</a>
     <input type="submit" value="A Submit Input">
     <ul id="show"></ul>
     <script src="src/shortcut.js"></script>
     <script>
     var ul = document.querySelector('#show');
+    // var text = document.querySelector('#text');
     var showKey = function( msg ){
         var li = document.createElement('li');
         li.innerText = msg;
@@ -26,12 +27,12 @@
     }
 
     KeyShortcut.config({
-        DEBUG:true
+        DEBUG:false
     })
 
     KeyShortcut.register('g',function( key ){
         showKey( key );
-    });
+    } );
 
     KeyShortcut.register({
         'g+k':function( msg ){

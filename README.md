@@ -26,7 +26,7 @@ define(['path/to/shortcut'],function(KeyShortcut){
 ```javascript
 KeyShortcut.register('g',function( key ){
     console.log("I just triggered key: " + key );
-});
+},document.querySelector('#input'));
 ```
 
 __OR__
