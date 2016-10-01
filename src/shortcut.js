@@ -49,7 +49,7 @@
     KeyShortcut.DEBUG = false;
     // 是否允许连击触发，即按住某一个按键不放。
     KeyShortcut.repeat = true;
-    KeyShortcut.VERSION = '0.0.1';
+    KeyShortcut.VERSION = '0.0.2';
     KeyShortcut.timeout = 0;
     KeyShortcut.register = function( key, callback, context ){
         if( typeof key === 'string' ){
