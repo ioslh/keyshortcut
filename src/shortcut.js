@@ -41,10 +41,16 @@
         }
     }
     var PRESSED_KEYS = [];
+    var LAST_TS = 0;
+    var CURR_TS = 0;
+    // 为了避免命名冲突，允许自定义内部属性的前缀。
     KeyShortcut.prop_prefix = '__ks';
+    // 是否允许调试输出
     KeyShortcut.DEBUG = false;
+    // 是否允许连击触发，即按住某一个按键不放。
+    KeyShortcut.repeat = true;
     KeyShortcut.VERSION = '0.0.1';
-    KeyShortcut.TIMEOUT = 0;
+    KeyShortcut.timeout = 0;
     KeyShortcut.register = function( key, callback, context ){
         if( typeof key === 'string' ){
             context = context || document;
@@ -63,7 +69,7 @@
     }
 
     KeyShortcut.config = function( options ){
-        var configurable = [ 'prop_prefix', 'DEBUG' ], k;
+        var configurable = [ 'prop_prefix', 'DEBUG', 'repeat' ], k;
         for( k in options ){
             if( hasOwn( options, k ) && configurable.indexOf( k ) !== -1 ){
                 KeyShortcut[ k ] = options[ k ];
@@ -103,9 +109,15 @@
          *    如何才能可以有一定的缓冲时间触发，比如按下 ‘g’，松开，迅速按下 ’k’，也使其能够激活 'g+k' 的快捷键组合；
          *    这对应的问题是，假如也注册了 'g' 这个单键的快捷键，在松开之后，按下 ‘k’ 之前这个短暂的时间要不要激活 ‘g’
          */
+
+
+        if( e.repeat && !this.repeat ){
+            return false;
+        }
+        // CURR_TS = new Date().getTime();
+
         var cur_key = e.key.toLowerCase();
         var internal = element[ this.prop_prefix + INTERNAL_STR ];
-        // log( e, 'o' );
         if( PRESSED_KEYS.indexOf( cur_key ) === -1 ){
             PRESSED_KEYS.push( cur_key );
         }else{
@@ -125,7 +137,8 @@
         }
         if( typeof trigger_key !== 'undefined' ){
             log( 'Shortcut Triggered -> ' + trigger_key, 'o' );
-            internal.ev_map[ trigger_key ].call( null, trigger_key );
+            // 这里确定一下是 apply 还是 call
+            internal.ev_map[ trigger_key ].call( null, trigger_key, e );
         }
     }
 
@@ -136,12 +149,12 @@
         var cur_key = e.key.toLowerCase();
         var idx = PRESSED_KEYS.indexOf( cur_key );
         if( idx !== -1 ){
-            if( this.TIMEOUT <= 0 ){
+            if( this.timeout <= 0 ){
                 PRESSED_KEYS.splice( idx, 1 );
             }else{
                 setTimeout( function(){
                     PRESSED_KEYS.splice( idx, 1 );
-                }, this.TIMEOUT );
+                }, this.timeout );
             }
         }
     }
