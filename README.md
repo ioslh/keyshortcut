@@ -6,19 +6,6 @@
 <script src="path/to/shortcut.js"></script>
 ```
 
-__OR__
-
-```javascript
-var KeyShortcut = require('path/to/shortcut.js')
-```
-
-__OR__
-
-```javascript
-define(['path/to/shortcut'],function(KeyShortcut){
-    KeyShortcut.register( /* your code */ );
-})
-```
 ### 2. Register Your Shortcuts
 
 > Define the key shortcut join with `+`, such as 'shift+a', 'a+b', etc.
