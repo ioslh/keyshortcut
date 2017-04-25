@@ -1,5 +1,16 @@
 # A Shortcut Library For Web App
 
+
+## Config
+```
+KeyShortcut.config({
+    // whether show key input info in console
+    DEBUG: true,
+    // max delay time to press next key for a combination
+    timeout: 300
+});
+```
+
 ## Register Your Shortcuts
 
 > Define the key shortcut join with `+`, such as 'shift+a', 'a+b', etc.
