@@ -4,7 +4,6 @@
   "description": "A Simple Library to Set Key Shortcut in webpage",
   "main": "src/shortcut.js",
   "scripts": {
-    "dev": "webpack-dev-server --content-base ./demo",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
