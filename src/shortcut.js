@@ -127,7 +127,7 @@
         log( 'Combine Pressed -> ' + PRESSED_KEYS.join( ', ' ) );
 
         var pressed_len = PRESSED_KEYS.length;
-        var trigger_key,combined_key;
+        var trigger_key, combined_key;
         for( ; pressed_len; pressed_len-- ){
             combined_key = PRESSED_KEYS.slice( -pressed_len ).join( '+' );
             if( combined_key in internal.ev_map ){

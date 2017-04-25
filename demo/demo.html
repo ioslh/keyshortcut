@@ -16,7 +16,7 @@
     <a id="text" href="#">A Link</a>
     <input type="submit" value="A Submit Input">
     <ul id="show"></ul>
-    <script src="src/shortcut.js"></script>
+    <script src="../src/shortcut.js"></script>
     <script>
     var ul = document.querySelector('#show');
     // var text = document.querySelector('#text');
@@ -50,6 +50,9 @@
         },
         c:function( msg ){
             showKey( msg );
+        },
+        'a+a+a+a': function( msg ){
+            showKey(msg);
         }
     });
 
