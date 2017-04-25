@@ -1,7 +1,7 @@
 (function( root, factory ){
 
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory({}});
+		module.exports = factory({});
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
@@ -60,7 +60,7 @@
     KeyShortcut.DEBUG = false;
     // 是否允许连击触发，即按住某一个按键不放。
     KeyShortcut.repeat = true;
-    KeyShortcut.VERSION = '0.0.5';
+    KeyShortcut.VERSION = '0.0.6';
     KeyShortcut.timeout = 0;
     KeyShortcut.register = function( key, callback, context ){
         if( typeof key === 'string' ){
