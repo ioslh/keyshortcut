@@ -1,12 +1,6 @@
 # A Shortcut Library For Web App
 
-### 1. Load the Script
-
-```html
-<script src="path/to/shortcut.js"></script>
-```
-
-### 2. Register Your Shortcuts
+## Register Your Shortcuts
 
 > Define the key shortcut join with `+`, such as 'shift+a', 'a+b', etc.
 
