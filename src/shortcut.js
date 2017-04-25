@@ -1,7 +1,10 @@
 (function( factory ){
-    var root = window;
-    root.KeyShortcut = factory( root, {} );
-})(function( root, KeyShortcut ){
+    if (typeof exports !== 'undefined') {
+        exports.default = factory( {} );
+    } else if(typeof window !== 'undefined') {
+        window.KeyShortcut = factory( {} );
+    }
+})(function( KeyShortcut ){
 
     var tmpKey,tmpValue;
     var hasOwn = function( obj, key ){
@@ -53,7 +56,7 @@
     KeyShortcut.DEBUG = false;
     // 是否允许连击触发，即按住某一个按键不放。
     KeyShortcut.repeat = true;
-    KeyShortcut.VERSION = '0.0.3';
+    KeyShortcut.VERSION = '0.0.4';
     KeyShortcut.timeout = 0;
     KeyShortcut.register = function( key, callback, context ){
         if( typeof key === 'string' ){

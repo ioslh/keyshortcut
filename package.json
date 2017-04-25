@@ -1,6 +1,6 @@
 {
   "name": "keyshortcut",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A Simple Library to Set Key Shortcut in webpage",
   "main": "src/shortcut.js",
   "scripts": {
