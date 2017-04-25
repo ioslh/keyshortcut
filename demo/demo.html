@@ -27,8 +27,8 @@
     }
 
     KeyShortcut.config({
-        DEBUG:true,
-        timeout:500
+        DEBUG: true,
+        timeout: 300
     })
 
     KeyShortcut.register('g',function( key ){
@@ -51,8 +51,8 @@
         c:function( msg ){
             showKey( msg );
         },
-        'a+a+a+a': function( msg ){
-            showKey(msg);
+        'up+up+down+down+left+right+left+right': function( msg){
+            showKey( msg );
         }
     });
 
