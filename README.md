@@ -2,7 +2,7 @@
 
 
 ## Config
-```
+```javascript
 KeyShortcut.config({
     // whether show key input info in console
     DEBUG: true,
