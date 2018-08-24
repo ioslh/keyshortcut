@@ -176,7 +176,7 @@
             return true;
         }
         // 这个属性值居然是 string 类型
-        if( tagName.contentEditable === 'true' ){
+        if( target.contentEditable === 'true' ){
             return true;
         }
         return false;
